@@ -36,3 +36,6 @@ yarn-error.*
 
 # testing
 src/tests/coverage/
+
+#IDE
+.idea

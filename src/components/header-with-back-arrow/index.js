@@ -1,4 +1,4 @@
-import { View, Pressable } from 'react-native'
+import { View, Pressable, SafeAreaView } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { Link } from 'expo-router'
 
@@ -16,10 +16,12 @@ const HeaderWithBackArrow = ({ route, text, onPress }) => {
     </Link>
   )
   return (
-    <View style={styles.headerContainer}>
-      {interactiveArrow}
-      <PaperText variant='headlineSmall'>{text}</PaperText>
-    </View>
+    <SafeAreaView>
+      <View style={styles.headerContainer}>
+        {interactiveArrow}
+        <PaperText variant='headlineSmall'>{text}</PaperText>
+      </View>
+    </SafeAreaView>
   )
 }
 
