@@ -10,7 +10,6 @@ async function initAxiosClient() {
 
   axiosClient = axios.create({
     withCredentials: true,
-    // baseURL: process.env['API_BASE_PATH'],
     baseURL: API_BASE_PATH,
     headers: {
       cookie: token

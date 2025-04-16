@@ -10,7 +10,15 @@ import { PaperText } from '~/containers'
 
 import { styles } from './MainConetent.styles'
 
-const MainContent = ({ nextStep, chooseRole, role }) => {
+const MainContent = ({
+  nextStep,
+  chooseRole,
+  role,
+  firstName,
+  lastName,
+  setFirstName,
+  setLastName
+}) => {
   const { t } = useTranslation()
 
   const onHandlePress = () => {
@@ -47,13 +55,17 @@ const MainContent = ({ nextStep, chooseRole, role }) => {
           <TextInput
             label={t('signup.name')}
             mode='outlined'
+            onChangeText={setFirstName}
             theme={styles.inputTheme}
+            value={firstName}
           />
           <TextInput
             label={t('signup.lastName')}
             mode='outlined'
+            onChangeText={setLastName}
             style={styles.bottomInput}
             theme={styles.inputTheme}
+            value={lastName}
           />
         </View>
         <View>

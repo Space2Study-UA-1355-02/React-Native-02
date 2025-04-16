@@ -20,8 +20,7 @@ export const loginUser = createAsyncThunk(
       const { data } = await AuthService.login(userData)
       await SecureStore.setItemAsync('accessToken', data.accessToken)
       dispatch(setUser(data.accessToken))
-    } catch (e) {
-      const error = e
+    } catch (error) {
       return rejectWithValue(error.response?.data.code)
     }
   }
@@ -35,15 +34,11 @@ export const createUser = createAsyncThunk(
       console.log(data)
       await SecureStore.setItemAsync('accessToken', data.accessToken)
       dispatch(setUser(data.accessToken))
-    } catch (e) {
-      const error = e
-      console.log('Axios error details:')
-      console.log('Message:', error.message)
-      console.log('Config:', error.config)
-      console.log('Code:', error.code)
-      console.log('Request:', error.request)
-      console.log('Response:', error.response)
-      return rejectWithValue(error.response?.data.code)
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      }
+      return rejectWithValue({ code: 'UNKNOWN_ERROR', message: error.message })
     }
   }
 )
