@@ -27,6 +27,27 @@ export const loginUser = createAsyncThunk(
   }
 )
 
+export const createUser = createAsyncThunk(
+  'appMain/createUser',
+  async (userData, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await AuthService.signup(userData)
+      console.log(data)
+      await SecureStore.setItemAsync('accessToken', data.accessToken)
+      dispatch(setUser(data.accessToken))
+    } catch (e) {
+      const error = e
+      console.log('Axios error details:')
+      console.log('Message:', error.message)
+      console.log('Config:', error.config)
+      console.log('Code:', error.code)
+      console.log('Request:', error.request)
+      console.log('Response:', error.response)
+      return rejectWithValue(error.response?.data.code)
+    }
+  }
+)
+
 export const mainSlice = createSlice({
   name: 'appMain',
   initialState,

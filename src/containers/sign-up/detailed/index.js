@@ -13,10 +13,13 @@ import {
 
 import palette from '~/styles/app-theme/app.pallete'
 import { styles } from './DetailedContent.styles'
+import { createUser } from '~/redux/reducer'
+import { useDispatch } from 'react-redux'
 
 const DetailedContent = ({ visible, toggle, role, backStep }) => {
   const [checked, setChecked] = useState(false)
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const description =
     role === 'student'
@@ -26,8 +29,23 @@ const DetailedContent = ({ visible, toggle, role, backStep }) => {
     setChecked(!checked)
   }
 
-  const signUp = () => {
-    router.replace('public/verified')
+  const signUp = async () => {
+    console.log('signUp')
+    const data = {
+      firstName: 'mobile',
+      lastName: 'test',
+      email: 'mobile@email.com',
+      role: 'student',
+      password: 'Q12345678'
+    }
+
+    try {
+      await dispatch(createUser(data)).unwrap()
+      // router.replace('public/verified')
+    } catch (err) {
+      console.error('Registration error:', err)
+    }
+    // router.replace('public/verified')
   }
 
   const handlePress = () => {
