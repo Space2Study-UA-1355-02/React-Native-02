@@ -13,10 +13,22 @@ import {
 
 import palette from '~/styles/app-theme/app.pallete'
 import { styles } from './DetailedContent.styles'
+import { createUser } from '~/redux/reducer'
+import { useDispatch } from 'react-redux'
 
-const DetailedContent = ({ visible, toggle, role, backStep }) => {
+const DetailedContent = ({
+  visible,
+  toggle,
+  role,
+  firstName,
+  lastName,
+  backStep
+}) => {
   const [checked, setChecked] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const description =
     role === 'student'
@@ -26,8 +38,29 @@ const DetailedContent = ({ visible, toggle, role, backStep }) => {
     setChecked(!checked)
   }
 
-  const signUp = () => {
-    router.replace('public/verified')
+  const signUp = async () => {
+    console.log('signUp')
+    const userData = {
+      firstName: firstName,
+      lastName: lastName,
+      email: 'mobile@email.com',
+      role: role,
+      password: 'Q12345678'
+    }
+
+    try {
+      await dispatch(createUser(userData)).unwrap()
+      router.replace('public/verified')
+    } catch (err) {
+      console.error('Registration error:', err)
+
+      //Should be removed when problem with email verification will be fixed
+      if (err?.code === 'EMAIL_NOT_SENT') {
+        router.replace('public/verified')
+      } else {
+        console.error('Unexpected registration error:', err)
+      }
+    }
   }
 
   const handlePress = () => {
@@ -54,11 +87,14 @@ const DetailedContent = ({ visible, toggle, role, backStep }) => {
             keyboardType='email-address'
             label={t('signup.email')}
             mode='outlined'
+            onChangeText={setEmail}
             theme={styles.inputTheme}
+            value={email}
           />
           <TextInput
             label={t('signup.password')}
             mode='outlined'
+            onChangeText={setPassword}
             right={
               <TextInput.Icon
                 icon={visible.password ? 'eye-off' : 'eye'}
@@ -68,6 +104,7 @@ const DetailedContent = ({ visible, toggle, role, backStep }) => {
             secureTextEntry={!visible.password}
             style={styles.input}
             theme={styles.inputTheme}
+            value={password}
           />
           <TextInput
             label={t('signup.confirmPassword')}

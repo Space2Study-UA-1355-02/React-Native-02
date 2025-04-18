@@ -18,6 +18,7 @@ web-build/
 
 # Metro
 .metro-health-check*
+%ProgramData%/
 
 # debug
 npm-debug.*
@@ -37,5 +38,6 @@ yarn-error.*
 # testing
 src/tests/coverage/
 
-#IDE
-.idea
+# ide
+.idea/
+
