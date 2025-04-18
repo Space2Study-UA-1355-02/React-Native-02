@@ -20,9 +20,25 @@ export const loginUser = createAsyncThunk(
       const { data } = await AuthService.login(userData)
       await SecureStore.setItemAsync('accessToken', data.accessToken)
       dispatch(setUser(data.accessToken))
-    } catch (e) {
-      const error = e
+    } catch (error) {
       return rejectWithValue(error.response?.data.code)
+    }
+  }
+)
+
+export const createUser = createAsyncThunk(
+  'appMain/createUser',
+  async (userData, { rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await AuthService.signup(userData)
+      console.log(data)
+      await SecureStore.setItemAsync('accessToken', data.accessToken)
+      dispatch(setUser(data.accessToken))
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      }
+      return rejectWithValue({ code: 'UNKNOWN_ERROR', message: error.message })
     }
   }
 )

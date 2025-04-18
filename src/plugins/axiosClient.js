@@ -1,6 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import { getAccessToken } from '~/utils/helper-functions'
+import { API_BASE_PATH } from '@env'
 
 let axiosClient
 
@@ -9,7 +10,7 @@ async function initAxiosClient() {
 
   axiosClient = axios.create({
     withCredentials: true,
-    baseURL: process.env['API_BASE_PATH'],
+    baseURL: API_BASE_PATH,
     headers: {
       cookie: token
     },
